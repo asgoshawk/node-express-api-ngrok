@@ -1,0 +1,7 @@
+version: "2"
+authtoken: PLACE_YOUR_NGROK_TOKEN_HERE
+tunnels:
+  http:
+    proto: http
+    # Your server address in the docker network
+    addr: 10.1.0.2:8080
