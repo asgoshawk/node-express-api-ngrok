@@ -1,0 +1,38 @@
+version: "3"
+services:
+  ngrok:
+    image: ngrok/ngrok:latest
+    restart: unless-stopped
+    depends_on:
+      - api-server
+    command:
+      - "start"
+      - "--all"
+      - "--config"
+      - "/etc/ngrok.yml"
+    volumes:
+      - ./ngrok.yml:/etc/ngrok.yml
+    ports:
+      - "4040:4040"
+    networks:
+      default:
+        ipv4_address: 10.1.0.10
+
+  api-server:
+    image: api-server
+    build:
+      context: .
+      dockerfile: server.Dockerfile
+    expose:
+      - 8080
+    networks:
+      default:
+        ipv4_address: 10.1.0.2
+
+networks:
+  default:
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.1.0.0/24
+          gateway: 10.1.0.1
